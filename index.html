@@ -1,23 +1,70 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>World of Words</title>
+    <script src="js/libs/modernizr-2.6.2.min.js"></script>
+    <link type="text/css" rel="stylesheet" href="css/groundwork.css">
+    <link rel="stylesheet" href="./Develop/css/style.css" />
+    <title>Document</title>
 </head>
-
 <body>
 
-    <form id="form">
-        <input type="text" id="searchWord" placeholder="Search Word" onfocus="clearContentTextArea(this);">
-        <input type="submit" value="Find">
-    </form>
+    <nav class="nav asphalt">
+        <div class="row">
+            <div class="one mobile fourth">
+                <h1 class="triple-pad-left pad-top">World of Words</h1>
+            </div>
+            <div class="one mobile fourth skip-one">
+                <ul style="margin-top: 0.6em;" class="absolute middle right">
+                    <li class="half-gapped"><button>Arvin</button></li>
+                    <li class="half-gapped"><button>Elvis</button></li>
+                    <li class="half-gapped"><button>Oli</button></li>
+                    <li class="half-gapped"><button>Nick</button></li>
+                </ul>
+            </div>
+            <div class="one mobile fourth">
+                <form action="#" method="post" id="form">
+                    <div class="row">
+                        <div class="one whole padded">
+                            <input type="text" id="searchWord" style="margin-top: 0.3em;" placeholder = "search a word">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </nav>
 
-    <div id="wordSearchResults">RESULTS DISPLAY BELOW</div>
+    <main>
+        <div class="row">
+            <div class="one half">
+                <div class="box" id="wordSearchResults">
+                    <div class="row" id="wordHeader">
+                        <h2 class="padded museo-slab">Tacos (n.) <span><button>Pronunciation</button></span></h2>
+                    </div>
+                    <div class="row" id="wordBody">
+                        <h3 class="padded quicksand">Definition: <br><br>Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci consequuntur fugiat, vel suscipit magnam molestiae, eius eaque ducimus nobis deleniti possimus quod id eveniet vitae aliquid sapiente nostrum quae! Error?</h3>
+                        <hr>
+                        <h3 class="padded quicksand">Synonym(s): <br><br>Lorem ipsum dolor sit amet consectetur adipisicing elit.</h3>
+                        <hr>
+                        <h3 class="padded quicksand">Antonym(s): <br><br>Lorem ipsum dolor sit amet consectetur adipisicing elit.</h3>
+                        <hr>
+                        <h3 class="padded quicksand">Example Sentence(s): <br><br>Lorem ipsum dolor sit amet consectetur adipisicing elit.<br>Lorem ipsum dolor sit amet consectetur adipisicing elit.<br>Lorem ipsum dolor sit amet consectetur adipisicing elit.</h3>
 
-    <script src="./Develop/javascript/script.js"></script>
+                    </div>
+                </div>
+            </div>
+
+            <div class="one half">
+                <img src="http://via.placeholder.com/300x300/2ecc71/ffffff/&amp;text=Image+1" alt="Image 1" class="round">
+            </div>
+        </div>
+    </main>
+
+
+    <script type="text/javascript" src="js/libs/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="js/groundwork.all.js"></script>
+    <script type="text/javascript" src="./Develop/javascript/script.js"></script>
 </body>
-
 </html>

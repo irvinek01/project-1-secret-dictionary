@@ -1,27 +1,20 @@
 var form = document.getElementById("form");
 var searchWord = document.getElementById("searchWord");
 var wordSearchResultsDiv = document.getElementById("wordSearchResults");
+var wordSearchResultsHeader = document.getElementById("wordHeader");
+var wordSearchResultsBody = document.getElementById("wordBody");
 
 form.addEventListener("submit", function (event) {
     event.preventDefault();
-    wordFromOWLBOTAPI(searchWord.value);
+    wordFromMerriamCollegiate(searchWord.value);
 })
-function wordFromOWLBOTAPI(userGivenWord) {
-    var owlbotAPI = "https://owlbot.info/api/v4/dictionary/" + userGivenWord;
-    // if ((userGivenWord == null) || (userGivenWord = " ")) { // Validation
-    //     alert("You did not enter any!");
-    //     return;
-    // }
-    fetch(owlbotAPI, {
-        headers: {
-            // curl --header "Authorization: Token 7579a9494dc6e8c7dfe3950082080d08db6a2b08"
-            //  https://owlbot.info/api/v4/dictionary/owl -s | json_pp
-            "Authorization": "Token 7579a9494dc6e8c7dfe3950082080d08db6a2b08"
-        },
-    })
+function wordFromMerriamCollegiate(userGivenWord) {
+    var merriamCollegiateAPI = "https://dictionaryapi.com/api/v3/references/collegiate/json/" + userGivenWord
+        + "?key=f4f2439f-643d-4825-9607-56a27f613896";
+    fetch(merriamCollegiateAPI)
         .then(function (response1) {
             if (response1.status === 404) {
-                alert("Sorry, " + userGivenWord + " is not in owlbot API dictionary");
+                alert("Sorry, " + userGivenWord + " cannot be found");
                 return;
             } else if (response1.status === 400) {
                 alert("Invalid");
@@ -29,36 +22,63 @@ function wordFromOWLBOTAPI(userGivenWord) {
             }
             return response1.json();
         })
-        .then(function (owlbotObj) {
-            console.log(owlbotObj);
-            getAndDisplayOwlBotResults(owlbotObj);
+        .then(function (merriamCollegiateAPI) {
+            // console.log(merriamCollegiateAPI);
+            getAndDisplayWord(merriamCollegiateAPI);
         })
 }
 
-function getAndDisplayOwlBotResults(searchResults) {
-    wordSearchResultsDiv.innerHTML = "";
-    ((wordSearched = document.createElement("h3")).textContent = searchResults.word);
-    ((wordPronunciation = document.createElement("p")).textContent = " / " + searchResults.pronunciation + " /");
-    wordSearchResultsDiv.appendChild(wordSearched);
-    wordSearched.appendChild(wordPronunciation);
+function getAndDisplayWord(searchResults) {
+    wordSearchResultsHeader.innerHTML = "";
+    firstResult = searchResults[0];
+    console.log(firstResult);
+    wordSearched = document.createElement("h2");
+    wordSearched.textContent = firstResult.meta.id;
+    wordSearched.classList.add("padded", "museo-slab");
 
-    for (var x = 0; x < searchResults.definitions.length; x++) {
-        ((wordSearchedType = document.createElement("p")).textContent = searchResults.definitions[x].type);
-        wordSearchedType.classList.add("wordType");
-        ((wordSearchedDefinition = document.createElement("p")).textContent = searchResults.definitions[x].definition);
-        ((wordSearchedExample = document.createElement("p")).textContent = searchResults.definitions[x].example);
-        ((wordSearchedEmoji = document.createElement("p")).textContent = searchResults.definitions[x].emoji);
-        ((wordSearchedIMG = document.createElement("img")).src = searchResults.definitions[x].img_url);
-        wordSearchedIMG.width, wordSearchedIMG.height = "100";
+    wordType = document.createElement("em");
+    wordType.textContent = " ( " + firstResult.fl + " ) ";
+    wordType.classList.add("padded", "museo-slab", "wordType");
 
-        wordSearchResultsDiv.appendChild(wordSearchedType);
-        wordSearchResultsDiv.appendChild(wordSearchedDefinition);
-        wordSearchResultsDiv.appendChild(wordSearchedEmoji);
-        wordSearchResultsDiv.appendChild(wordSearchedExample);
-        wordSearchResultsDiv.appendChild(wordSearchedIMG);
+    spanForWordPRS = document.createElement("span");
+    wordPronunciation = document.createElement("button");
+    audio = document.createElement("audio");
+    audio.src = "https://media.merriam-webster.com/audio/prons/en/us/mp3/l/lion0001.mp3";
+    wordPronunciation.textContent = firstResult.hwi.prs[0].mw;
+    wordPronunciation.onclick = function () {
+        audio.play();
+    };
+    // firstResult.hwi.prs[0].sound.audio this is the sound audio
+    inflectionLabel = document.createElement("em");
+    inflectionSpelled = document.createElement("b");
+    inflectionLabel.textContent = firstResult.ins[0].il + " ";
+    inflectionSpelled.textContent = firstResult.ins[0].if
+
+
+    wordSearchResultsHeader.appendChild(wordSearched);
+    wordSearched.appendChild(wordType);
+    wordType.appendChild(spanForWordPRS);
+    spanForWordPRS.appendChild(wordPronunciation);
+    wordPronunciation.appendChild(audio);
+    wordSearchResultsHeader.appendChild(inflectionLabel);
+    inflectionLabel.appendChild(inflectionSpelled);
+
+    wordSearchResultsBody.innerHTML = "";
+    wordDefinitionTitle = document.createElement("h3");
+    wordDefinitionTitle.classList.add("padded", "quicksand");
+    wordDefinitionTitle.innerHTML = "Definition: <br>";
+    console.log(firstResult.shortdef);
+    for (var i = 0; i < firstResult.shortdef.length; i++) {
+        wordDefinitions = document.createElement("li");
+        wordDefinitions.classList.add("padded", "quicksand", "wordDefinitions");
+        wordDefinitions.textContent = firstResult.shortdef[i];
+        wordDefinitionTitle.appendChild(wordDefinitions);
+
     }
+    wordSearchResultsBody.appendChild(wordDefinitionTitle);
 
 }
+
 function clearContentTextArea(element) {
     element.value = "";
 }
