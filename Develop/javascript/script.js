@@ -1,23 +1,82 @@
-$(document).ready(function () {
-    var apiKey = "563492ad6f9170000100000177a465d3b96f4c42ada52578bcec403f";
-    var searchTerm = "dog";
-    imageSearch();
-    function imageSearch() {
-        $.ajax({
-            method: "GET",
-            beforeSend: function (xhr) {
-                xhr.setRequestHeader("Authorization", apiKey);
-            },
-            url: "https://api.pexels.com/v1/search?query=" + searchTerm + "&per_page=15&page=1",
-            success: function (data) {
-                console.log(data);
-            },
-            error: function (error) {
-                console.log(error);
-            }
-        })
+var apiKey = "563492ad6f9170000100000177a465d3b96f4c42ada52578bcec403f";
+var pictureContainer = document.getElementById("picture-container");
+
+function imageSearch(searchTerm) {
+    $.ajax({
+        method: "GET",
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("Authorization", apiKey);
+        },
+        url: "https://api.pexels.com/v1/search?query=" + searchTerm + "&per_page=15&page=1",
+        success: function (data) {
+            console.log(data);
+            pictureContainer.innerHTML = "";
+            printImage(data);
+            printImageSmall(data);
+        },
+        error: function (error) {
+            console.log(error);
+        }
+    })
+}
+
+function printImage(data) {
+    
+    var firstRow = document.createElement("div");
+    firstRow.setAttribute("class","row");
+    firstRow.setAttribute("style","max-height:800px;display:flex;justify-content:center;");
+
+    var firstRowDiv = document.createElement("div");
+    firstRowDiv.setAttribute("style","position:relative;max-height:100%;display:flex;justify-content:center;");
+    firstRowDiv.setAttribute("class","padded");
+
+    var firstPic = document.createElement("img");
+    firstPic.setAttribute("src",data.photos[0].src.original);
+    firstPic.setAttribute("style","max-height:100%;border-radius:50px;");
+    firstPic.setAttribute("class","sample-image");
+
+    var link = document.createElement("a");
+    link.setAttribute("href",data.photos[0].url);
+    link.setAttribute("target","_blank");
+    link.setAttribute("class","absolute bottom half-padded authorLink double-gap-bottom small");
+    link.textContent = "Picture taken by: " + data.photos[0].photographer;
+
+    firstRowDiv.appendChild(firstPic);
+    firstRowDiv.appendChild(link);
+    firstRow.appendChild(firstRowDiv);
+    pictureContainer.appendChild(firstRow);
+}
+
+function printImageSmall(data) {
+
+    var secondRow = document.createElement("div");
+    secondRow.setAttribute("class","row");
+    secondRow.setAttribute("style","max-height:500px;display:flex;justify-content:center;");
+
+    for (var i=1;i<4;i++) {
+
+        var secondRowDiv = document.createElement("div");
+        secondRowDiv.setAttribute("style","position:relative;max-height:100%;display:flex;justify-content:center;");
+        secondRowDiv.setAttribute("class","padded one third");
+
+        var secondPic = document.createElement("img");
+        secondPic.setAttribute("src",data.photos[i].src.original);
+        secondPic.setAttribute("style","border-radius:25px;");
+        secondPic.setAttribute("class","sample-image");
+
+        var link = document.createElement("a");
+        link.setAttribute("href",data.photos[i].url);
+        link.setAttribute("target","_blank");
+        link.setAttribute("class","absolute bottom half-padded authorLink double-gap-bottom small");
+        link.textContent = "Picture taken by: " + data.photos[i].photographer;
+
+        secondRowDiv.appendChild(secondPic);
+        secondRowDiv.appendChild(link);
+        secondRow.appendChild(secondRowDiv);
     }
-})
+    pictureContainer.appendChild(secondRow);
+}
+
 var form = document.getElementById("form");
 var searchWord = document.getElementById("searchWord");
 var wordSearchResultsDiv = document.getElementById("wordSearchResults");
@@ -27,6 +86,7 @@ var wordSearchResultsBody = document.getElementById("wordBody");
 form.addEventListener("submit", function (event) {
     event.preventDefault();
     wordFromMerriamCollegiate(searchWord.value);
+    imageSearch(searchWord.value);
 })
 function wordFromMerriamCollegiate(userGivenWord) {
     var merriamCollegiateAPI = "https://dictionaryapi.com/api/v3/references/collegiate/json/" + userGivenWord
