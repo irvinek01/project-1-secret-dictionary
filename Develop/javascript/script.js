@@ -30,7 +30,7 @@ form.addEventListener("submit", function (event) {
 })
 function wordFromMerriamCollegiate(userGivenWord) {
     var merriamCollegiateAPI = "https://dictionaryapi.com/api/v3/references/collegiate/json/" + userGivenWord
-        + "?key=f4f2439f-643d-4825-9607-56a27f613896";
+        + "?key=f4f2439f-643d-4825-9607-56a27f613896"; // AJ MerriamCollegiateAPI
     fetch(merriamCollegiateAPI)
         .then(function (response1) {
             // console.log(response1.status);
@@ -41,6 +41,8 @@ function wordFromMerriamCollegiate(userGivenWord) {
                         getAndDisplayWord(data);
                     } else {
                         alert("Sorry, " + userGivenWord + " cannot be found");
+                        wordSearchResultsHeader.innerHTML = "";
+                        wordSearchResultsBody.innerHTML = "";
                     }
                 });
             } else {
@@ -51,7 +53,7 @@ function wordFromMerriamCollegiate(userGivenWord) {
 
 function getAndDisplayWord(searchResults) {
     wordSearchResultsHeader.innerHTML = "";
-    firstResult = searchResults[0];
+    firstResult = searchResults[0]; // Assigned the array data from response to firstResult
     console.log(firstResult);
     wordSearched = document.createElement("h2");
     wordSearched.textContent = searchWord.value;
@@ -65,10 +67,6 @@ function getAndDisplayWord(searchResults) {
     wordPronunciation = document.createElement("button");
     audio = document.createElement("audio");
     audioFile = firstResult.hwi.prs[0].sound.audio;
-    // if audiofil begins w bix, firstLet is bix
-    // else if, begins w gg, firstLet is gg
-    // else if begins w number or punctuation (eg, "_"), firstlet is number
-    // else firstLet is firstLet
     var specialAndNumChars = "!@#$%^&*()_+~`|}{[]\:;?><,./-=0123456789";
     if (audioFile.substring(0, 3) === "bix") {
         dirFolder = "bix";
@@ -84,14 +82,13 @@ function getAndDisplayWord(searchResults) {
     wordPronunciation.onclick = function () {
         audio.play();
     };
-    // firstResult.hwi.prs[0].sound.audio this is the sound audio
 
     wordSearchResultsHeader.appendChild(wordSearched);
     wordSearched.appendChild(wordType);
     wordType.appendChild(spanForWordPRS);
     spanForWordPRS.appendChild(wordPronunciation);
     wordPronunciation.appendChild(audio);
-    if (firstResult.ins) {
+    if (firstResult.ins) { // Checks for plural forms, ISSUE IL
         inflectionLabel = document.createElement("em");
         inflectionSpelled = document.createElement("b");
         inflectionLabel.textContent = firstResult.ins[0].il + " ";
@@ -104,15 +101,15 @@ function getAndDisplayWord(searchResults) {
     wordDefinitionTitle = document.createElement("h3");
     wordDefinitionTitle.classList.add("padded", "quicksand");
     wordDefinitionTitle.innerHTML = "Definition: <br>";
-    console.log(firstResult.shortdef);
     for (var i = 0; i < firstResult.shortdef.length; i++) {
         wordDefinitions = document.createElement("li");
         wordDefinitions.classList.add("padded", "quicksand", "wordDefinitions");
         wordDefinitions.textContent = firstResult.shortdef[i];
         wordDefinitionTitle.appendChild(wordDefinitions);
-
     }
     wordSearchResultsBody.appendChild(wordDefinitionTitle);
+    hrAfterDefinition = document.createElement("hr");
+    wordDefinitions.appendChild(hrAfterDefinition);
 
 }
 
