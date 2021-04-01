@@ -1,4 +1,4 @@
-var apiKey = "563492ad6f9170000100000177a465d3b96f4c42ada52578bcec403f";
+var apiKey = "563492ad6f9170000100000177a465d3b96f4c42ada52578bcec403f"; //api key from Nick
 var pictureContainer = document.getElementById("picture-container");
 
 function imageSearch(searchTerm) {
