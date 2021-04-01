@@ -226,6 +226,25 @@ function getAndDisplaySynAndAnt(data) {
     }
     wordAntTitle.appendChild(wordAnt);
 
+     wordExampleTi = document.createElement("h3");
+    wordExampleTi.classList.add("padded", "quicksand");
+    wordExampleTi.innerHTML = "Example: <br>";
+
+    if (firstResult.quotes) {
+        for (var i = 0; i < firstResult.quotes.length; i++) {
+        var wordExample = document.createElement ("li");
+        wordExample.classList.add("padded", "quicksand", "wordDefinitions");
+        wordExample.innerHTML = firstResult.quotes[i].t.replaceAll("{qword}", "").replaceAll("{/qword}", "") + "<br><br>-"; 
+        var wordRep = document.createElement ("em");
+        wordRep.innerHTML = firstResult.quotes[i].aq.auth; 
+        wordExample.appendChild(wordRep);
+        wordExampleTi.appendChild(wordExample)
+        }
+    } else {
+        wordExampleTi.innerHTML = "Example: <br> No examples found to display.";
+        }   
+    
+    wordSearchResultsBody.appendChild(wordExampleTi);
 }
 
 function clearContentTextArea(element) {
