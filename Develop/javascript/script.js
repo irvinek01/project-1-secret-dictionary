@@ -11,6 +11,7 @@ function imageSearch(searchTerm) {
         success: function (data) {
             // console.log(data);
             pictureContainer.innerHTML = "";
+            pictureContainer.setAttribute ("style", "")
             printImage(data);
             printImageSmall(data);
         },
@@ -126,7 +127,8 @@ function getAndDisplayWord(searchResults) {
     wordType.classList.add("padded", "museo-slab", "wordType");
 
     spanForWordPRS = document.createElement("span");
-    wordPronunciation = document.createElement("button");
+    wordPronunciation = document.createElement("button"); 
+    wordPronunciation.setAttribute ("class", "asphalt")
     audio = document.createElement("audio");
     audioFile = firstResult.hwi.prs[0].sound.audio;
     var specialAndNumChars = "!@#$%^&*()_+~`|}{[]\:;?><,./-=0123456789";
