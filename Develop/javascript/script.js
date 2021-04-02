@@ -10,11 +10,11 @@ function imageSearch(searchTerm) {
         url: "https://api.pexels.com/v1/search?query=" + searchTerm + "&per_page=15&page=1",
         success: function (data) {
             pictureContainer.innerHTML = "";
-            pictureContainer.setAttribute ("style", "")
+            pictureContainer.setAttribute("style", "")
 
-            if (data.photos.length>0) {
+            if (data.photos.length > 0) {
                 printImage(data);
-                if (data.photos.length>4) {
+                if (data.photos.length > 4) {
                     printImageSmall(data);
                 }
             } else {
@@ -58,7 +58,7 @@ function printImageSmall(data) {
 
     var secondRow = document.createElement("div");
     secondRow.setAttribute("class", "row");
-    secondRow.setAttribute("id","second-row");
+    secondRow.setAttribute("id", "second-row");
     secondRow.setAttribute("style", "max-height:500px;");
 
     for (var i = 1; i < 4; i++) {
@@ -109,19 +109,20 @@ function wordFromMerriamCollegiate(userGivenWord) {
                     if (data[0].fl) { // Checking if the word is a legit
                         getAndDisplayWord(data);
                     } else {
-                        alert("Sorry, " + userGivenWord + " cannot be found");
-                        wordSearchResultsHeader.innerHTML = "";
                         wordSearchResultsBody.innerHTML = "";
+                        wordSearchResultsHeader.innerHTML = "Word cannot be found in Merriam Webster's Dictionary";
                     }
                 });
             } else {
-                alert("Cannot found");
+                wordSearchResultsBody.innerHTML = "";
+                wordSearchResultsHeader.innerHTML = "Data Fetch Failed";
             }
         })
 }
 
 function getAndDisplayWord(searchResults) {
     wordSearchResultsHeader.innerHTML = "";
+    wordSearchResultsBody.innerHTML = "";
     firstResult = searchResults[0]; // Assigned the array data from response to firstResult
     // console.log(firstResult);
     wordSearched = document.createElement("h2");
@@ -133,8 +134,8 @@ function getAndDisplayWord(searchResults) {
     wordType.classList.add("padded", "museo-slab", "wordType");
 
     spanForWordPRS = document.createElement("span");
-    wordPronunciation = document.createElement("button"); 
-    wordPronunciation.setAttribute ("class", "asphalt double-gap-left");
+    wordPronunciation = document.createElement("button");
+    wordPronunciation.setAttribute("class", "asphalt double-gap-left");
     audio = document.createElement("audio");
     audioFile = firstResult.hwi.prs[0].sound.audio;
     var specialAndNumChars = "!@#$%^&*()_+~`|}{[]\:;?><,./-=0123456789";
@@ -167,7 +168,6 @@ function getAndDisplayWord(searchResults) {
         inflectionLabel.appendChild(inflectionSpelled);
     }
 
-    wordSearchResultsBody.innerHTML = "";
     wordDefinitionTitle = document.createElement("h3");
     wordDefinitionTitle.classList.add("padded", "quicksand");
     wordDefinitionTitle.innerHTML = "Definition: <br>";
@@ -194,30 +194,32 @@ function SynAndAntoFromMerriamCollegiate(userGivenWord) {
                 response2.json().then(function (data) {
                     console.log(data);
                     if (data[0].meta) { // Checking if the word is a legit
-                        getAndDisplaySynAndAnt(data);
+                        getAndDisplaySynAndAnt(data, true);
                     } else {
-                        alert("Sorry, No Synonyms/Antonyms can be found");
+                        getAndDisplaySynAndAnt(data, false);
                     }
                 });
-            } else {
-                alert("Cannot found");
-            }
+            } 
         })
 }
 
-function getAndDisplaySynAndAnt(data) {
+function getAndDisplaySynAndAnt(data, check) {
     wordSynTitle = document.createElement("h3");
     wordSynTitle.classList.add("padded", "quicksand");
     wordSynTitle.innerHTML = "Synonym(s): <br>";
     wordSearchResultsBody.appendChild(wordSynTitle);
     wordSyn = document.createElement("p");
     wordSyn.classList.add("padded", "quicksand", "wordDefinitions");
-    if (data[0].meta.syns.length == 0) {
-        wordSyn.textContent = "Not available";
-    } else {
-        for (var i = 0; i < data[0].meta.syns[0].length; i++) {
-            wordSyn.textContent += data[0].meta.syns[0][i] + ", ";
+    if (check) {
+        if (data[0].meta.syns.length == 0) {
+            wordSyn.textContent = "Not available";
+        } else {
+            for (var i = 0; i < data[0].meta.syns[0].length; i++) {
+                wordSyn.textContent += data[0].meta.syns[0][i] + ", ";
+            }
         }
+    } else {
+        wordSyn.textContent = "Not found";
     }
     wordSynTitle.appendChild(wordSyn);
 
@@ -227,33 +229,37 @@ function getAndDisplaySynAndAnt(data) {
     wordSearchResultsBody.appendChild(wordAntTitle);
     wordAnt = document.createElement("p");
     wordAnt.classList.add("padded", "quicksand", "wordDefinitions");
-    if (data[0].meta.ants.length == 0) {
-        wordAnt.textContent = "Not available";
-    } else {
-        for (var i = 0; i < data[0].meta.ants[0].length; i++) {
-            wordAnt.textContent += data[0].meta.ants[0][i] + ", ";
+    if (check) {
+        if (data[0].meta.ants.length == 0) {
+            wordAnt.textContent = "Not available";
+        } else {
+            for (var i = 0; i < data[0].meta.ants[0].length; i++) {
+                wordAnt.textContent += data[0].meta.ants[0][i] + ", ";
+            }
         }
+    } else {
+        wordAnt.textContent = "Not found";
     }
     wordAntTitle.appendChild(wordAnt);
 
-     wordExampleTi = document.createElement("h3");
+    wordExampleTi = document.createElement("h3");
     wordExampleTi.classList.add("padded", "quicksand");
     wordExampleTi.innerHTML = "Example: <br>";
 
     if (firstResult.quotes) {
         for (var i = 0; i < firstResult.quotes.length; i++) {
-        var wordExample = document.createElement ("li");
-        wordExample.classList.add("padded", "quicksand", "wordDefinitions");
-        wordExample.innerHTML = firstResult.quotes[i].t.replaceAll("{qword}", "").replaceAll("{/qword}", "") + "<br><br>-"; 
-        var wordRep = document.createElement ("em");
-        wordRep.innerHTML = firstResult.quotes[i].aq.auth; 
-        wordExample.appendChild(wordRep);
-        wordExampleTi.appendChild(wordExample)
+            var wordExample = document.createElement("li");
+            wordExample.classList.add("padded", "quicksand", "wordDefinitions");
+            wordExample.innerHTML = firstResult.quotes[i].t.replaceAll("{qword}", "").replaceAll("{/qword}", "") + "<br><br>-";
+            var wordRep = document.createElement("em");
+            wordRep.innerHTML = firstResult.quotes[i].aq.auth;
+            wordExample.appendChild(wordRep);
+            wordExampleTi.appendChild(wordExample)
         }
     } else {
         wordExampleTi.innerHTML = "Example: <br> No examples found to display.";
-        }   
-    
+    }
+
     wordSearchResultsBody.appendChild(wordExampleTi);
 }
 
