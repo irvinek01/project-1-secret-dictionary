@@ -18,7 +18,7 @@ THEN I will see the definition, pronunciation, other lengua, synonym antonym and
 WHEN I look on the right part of my view
 THEN I will see an image relate to the word I searched
 WHEN an image is not possible
-THEN the left part of my view, will fill through the right part to make more emphasis to the word I searched
+THEN the left part of my view, will fill through the right part completely focusing on the word definitions
 
 ## Usage
  Use the textbox on the top part of the page to search a word then upon submitting, the page will load the results with the emphasis of the word being searched, with the pronunciation beside it (clickable to hear how to pronounce), example sentences, synonyms/antonyms then picture references on the right part.
