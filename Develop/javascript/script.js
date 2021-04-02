@@ -9,11 +9,17 @@ function imageSearch(searchTerm) {
         },
         url: "https://api.pexels.com/v1/search?query=" + searchTerm + "&per_page=15&page=1",
         success: function (data) {
-            // console.log(data);
             pictureContainer.innerHTML = "";
             pictureContainer.setAttribute ("style", "")
-            printImage(data);
-            printImageSmall(data);
+
+            if (data.photos.length>0) {
+                printImage(data);
+                if (data.photos.length>4) {
+                    printImageSmall(data);
+                }
+            } else {
+                pictureContainer.textContent = "No pictures found";
+            }
         },
         error: function (error) {
             console.log(error);
@@ -128,7 +134,7 @@ function getAndDisplayWord(searchResults) {
 
     spanForWordPRS = document.createElement("span");
     wordPronunciation = document.createElement("button"); 
-    wordPronunciation.setAttribute ("class", "asphalt")
+    wordPronunciation.setAttribute ("class", "asphalt double-gap-left");
     audio = document.createElement("audio");
     audioFile = firstResult.hwi.prs[0].sound.audio;
     var specialAndNumChars = "!@#$%^&*()_+~`|}{[]\:;?><,./-=0123456789";
