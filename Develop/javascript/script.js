@@ -51,13 +51,14 @@ function printImageSmall(data) {
 
     var secondRow = document.createElement("div");
     secondRow.setAttribute("class", "row");
-    secondRow.setAttribute("style", "max-height:500px;display:flex;justify-content:center;");
+    secondRow.setAttribute("id","second-row");
+    secondRow.setAttribute("style", "max-height:500px;");
 
     for (var i = 1; i < 4; i++) {
 
         var secondRowDiv = document.createElement("div");
         secondRowDiv.setAttribute("style", "position:relative;max-height:100%;display:flex;justify-content:center;");
-        secondRowDiv.setAttribute("class", "padded one third");
+        secondRowDiv.setAttribute("class", "padded one third ipad");
 
         var secondPic = document.createElement("img");
         secondPic.setAttribute("src", data.photos[i].src.original);
@@ -172,6 +173,7 @@ function getAndDisplayWord(searchResults) {
     hrAfterDefinition = document.createElement("hr");
     wordDefinitions.appendChild(hrAfterDefinition);
 
+    searchWord.value = "";
 }
 
 function SynAndAntoFromMerriamCollegiate(userGivenWord) {

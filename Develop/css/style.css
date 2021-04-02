@@ -8,6 +8,15 @@
     font-size: 15px;
 }
 
+h1 {
+    margin: 0;
+    padding: 15px;
+}
+
+#search-bar {
+    padding: 15px;
+}
+
 .authorLink {
     border: 2px solid #34495e;
     background-color: #34495e;
@@ -25,4 +34,11 @@ a:visited {
 
 a:hover {
     color:yellow;
+}
+
+@media screen and (min-width:768px) {
+    #second-row {
+        display:flex;
+        justify-content:center;
+    }
 }
