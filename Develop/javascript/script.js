@@ -1,5 +1,7 @@
 var apiKey = "563492ad6f9170000100000177a465d3b96f4c42ada52578bcec403f"; // API key from Nick
 var pictureContainer = document.getElementById("picture-container");
+var pastSearch = [];
+var pastButtonDisplay = document.getElementById("past-button-list");
 
 function imageSearch(searchTerm) {
     $.ajax({
@@ -14,7 +16,7 @@ function imageSearch(searchTerm) {
 
             if (data.photos.length > 0) {
                 printImage(data);
-                if (data.photos.length > 4) {
+                if (data.photos.length >= 5) {
                     printImageSmall(data);
                 }
             } else {
@@ -61,11 +63,11 @@ function printImageSmall(data) {
     secondRow.setAttribute("id", "second-row");
     secondRow.setAttribute("style", "max-height:500px;");
 
-    for (var i = 1; i < 4; i++) {
+    for (var i = 1; i < 5; i++) {
 
         var secondRowDiv = document.createElement("div");
         secondRowDiv.setAttribute("style", "position:relative;max-height:100%;display:flex;justify-content:center;");
-        secondRowDiv.setAttribute("class", "padded one third ipad");
+        secondRowDiv.setAttribute("class", "padded one half one-up-ipad");
 
         var secondPic = document.createElement("img");
         secondPic.setAttribute("src", data.photos[i].src.original);
@@ -97,17 +99,57 @@ form.addEventListener("submit", function (event) {
     SynAndAntoFromMerriamCollegiate(searchWord.value);
     imageSearch(searchWord.value);
 })
+
+function updateSave(word) {
+    if (!pastSearch.includes(word)) {
+        pastSearch.push(word);
+        while (pastSearch.length>5) {
+            pastSearch.shift();
+        }
+        printButton();
+        localStorage.setItem("Past Word Searches", JSON.stringify(pastSearch));
+    }
+}
+
+function init() {
+    pastSearch = JSON.parse(localStorage.getItem("Past Word Searches"));
+    printButton();
+}
+
+pastButtonDisplay.addEventListener("click", function(event) {
+    var element=event.target;
+    if (element.matches(".past-search-btn")) {
+        var word = element.textContent;
+        wordFromMerriamCollegiate(word);
+        SynAndAntoFromMerriamCollegiate(word);
+        imageSearch(word);
+    }
+})
+
+function printButton() {
+    pastButtonDisplay.innerHTML = "";
+    for (var i=0;i<pastSearch.length;i++) {
+        list = document.createElement("li");
+        list.setAttribute("class","half-gapped");
+        button = document.createElement("button");
+        button.textContent = pastSearch[i];
+        button.classList.add("past-search-btn");
+        // button.setAttribute("style","border:2px solid white;border-radius:10px;");
+        list.appendChild(button);
+        pastButtonDisplay.appendChild(list);
+    }
+}
+
 function wordFromMerriamCollegiate(userGivenWord) {
     var merriamCollegiateAPI = "https://dictionaryapi.com/api/v3/references/collegiate/json/" + userGivenWord
         + "?key=f4f2439f-643d-4825-9607-56a27f613896"; // AJ MerriamCollegiateAPI
     fetch(merriamCollegiateAPI)
         .then(function (response1) {
-            // console.log(response1.status);
             if (response1.ok) {
                 response1.json().then(function (data) {
-                    // console.log(data);
                     if (data[0].fl) { // Checking if the word is a legit
                         getAndDisplayWord(data);
+                        updateSave(userGivenWord);
                     } else {
                         wordSearchResultsBody.innerHTML = "";
                         wordSearchResultsHeader.innerHTML = "Word cannot be found in Merriam Webster's Dictionary";
@@ -189,10 +231,8 @@ function SynAndAntoFromMerriamCollegiate(userGivenWord) {
         + "?key=b99aa4f1-0306-436d-ae05-cb4ddae328a0"; // API from Nick
     fetch(merriamthesaurusAPI)
         .then(function (response2) {
-            // console.log(response1.status);
             if (response2.ok) {
                 response2.json().then(function (data) {
-                    console.log(data);
                     if (data[0].meta) { // Checking if the word is a legit
                         getAndDisplaySynAndAnt(data, true);
                     } else {
@@ -212,14 +252,15 @@ function getAndDisplaySynAndAnt(data, check) {
     wordSyn.classList.add("padded", "quicksand", "wordDefinitions");
     if (check) {
         if (data[0].meta.syns.length == 0) {
-            wordSyn.textContent = "Not available";
+            wordSyn.textContent = "No synonyms found.";
         } else {
             for (var i = 0; i < data[0].meta.syns[0].length; i++) {
                 wordSyn.textContent += data[0].meta.syns[0][i] + ", ";
             }
+            wordSyn.textContent = wordSyn.textContent.substring(0,wordSyn.textContent.length-2);
         }
     } else {
-        wordSyn.textContent = "Not found";
+        wordSyn.textContent = "Error: no data fetched.";
     }
     wordSynTitle.appendChild(wordSyn);
 
@@ -231,20 +272,21 @@ function getAndDisplaySynAndAnt(data, check) {
     wordAnt.classList.add("padded", "quicksand", "wordDefinitions");
     if (check) {
         if (data[0].meta.ants.length == 0) {
-            wordAnt.textContent = "Not available";
+            wordAnt.textContent = "No antonyms found.";
         } else {
             for (var i = 0; i < data[0].meta.ants[0].length; i++) {
                 wordAnt.textContent += data[0].meta.ants[0][i] + ", ";
             }
+            wordAnt.textContent = wordAnt.textContent.substring(0,wordAnt.textContent.length-2);
         }
     } else {
-        wordAnt.textContent = "Not found";
+        wordAnt.textContent = "Error: no data fetched.";
     }
     wordAntTitle.appendChild(wordAnt);
 
     wordExampleTi = document.createElement("h3");
     wordExampleTi.classList.add("padded", "quicksand");
-    wordExampleTi.innerHTML = "Example: <br>";
+    wordExampleTi.innerHTML = "Example(s): <br>";
 
     if (firstResult.quotes) {
         for (var i = 0; i < firstResult.quotes.length; i++) {
@@ -257,12 +299,13 @@ function getAndDisplaySynAndAnt(data, check) {
             wordExampleTi.appendChild(wordExample)
         }
     } else {
-        wordExampleTi.innerHTML = "Example: <br> No examples found to display.";
+        noQuotes = document.createElement("p");
+        noQuotes.classList.add("padded", "quicksand", "wordDefinitions");
+        noQuotes.innerHTML = "No examples found to display.";
     }
 
+    wordExampleTi.appendChild(noQuotes);
     wordSearchResultsBody.appendChild(wordExampleTi);
 }
 
-function clearContentTextArea(element) {
-    element.value = "";
-}
+init();
