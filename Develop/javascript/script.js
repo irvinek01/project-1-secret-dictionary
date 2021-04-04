@@ -228,6 +228,29 @@ function getAndDisplayWord(searchResults) {
     wordDefinitions.appendChild(hrAfterDefinition);
 
     searchWord.value = "";
+
+    wordExampleTi = document.createElement("h3");
+    wordExampleTi.classList.add("padded", "quicksand");
+    wordExampleTi.innerHTML = "Example(s): <br>";
+
+    if (firstResult.quotes) {
+        for (var i = 0; i < firstResult.quotes.length; i++) {
+            var wordExample = document.createElement("li");
+            wordExample.classList.add("padded", "quicksand", "wordDefinitions");
+            wordExample.innerHTML = firstResult.quotes[i].t.replaceAll("{qword}", "").replaceAll("{/qword}", "") + "<br><br>-";
+            var wordRep = document.createElement("em");
+            wordRep.innerHTML = firstResult.quotes[i].aq.auth;
+            wordExample.appendChild(wordRep);
+            wordExampleTi.appendChild(wordExample)
+        }
+    } else {
+        noQuotes = document.createElement("p");
+        noQuotes.classList.add("padded", "quicksand", "wordDefinitions");
+        noQuotes.innerHTML = "No examples found to display.";
+        wordExampleTi.appendChild(noQuotes);
+    }
+
+    wordSearchResultsBody.appendChild(wordExampleTi);
 }
 
 function SynAndAntoFromMerriamCollegiate(userGivenWord) {
@@ -288,28 +311,6 @@ function getAndDisplaySynAndAnt(data, check) {
     }
     wordAntTitle.appendChild(wordAnt);
 
-    wordExampleTi = document.createElement("h3");
-    wordExampleTi.classList.add("padded", "quicksand");
-    wordExampleTi.innerHTML = "Example(s): <br>";
-
-    if (firstResult.quotes) {
-        for (var i = 0; i < firstResult.quotes.length; i++) {
-            var wordExample = document.createElement("li");
-            wordExample.classList.add("padded", "quicksand", "wordDefinitions");
-            wordExample.innerHTML = firstResult.quotes[i].t.replaceAll("{qword}", "").replaceAll("{/qword}", "") + "<br><br>-";
-            var wordRep = document.createElement("em");
-            wordRep.innerHTML = firstResult.quotes[i].aq.auth;
-            wordExample.appendChild(wordRep);
-            wordExampleTi.appendChild(wordExample)
-        }
-    } else {
-        noQuotes = document.createElement("p");
-        noQuotes.classList.add("padded", "quicksand", "wordDefinitions");
-        noQuotes.innerHTML = "No examples found to display.";
-        wordExampleTi.appendChild(noQuotes);
-    }
-
-    wordSearchResultsBody.appendChild(wordExampleTi);
 }
 
 init();
