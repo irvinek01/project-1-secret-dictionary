@@ -59,14 +59,13 @@ function printImage(data) {
 function printImageSmall(data) {
 
     var secondRow = document.createElement("div");
-    secondRow.setAttribute("class", "row");
+    secondRow.setAttribute("class", "equalize row");
     secondRow.setAttribute("id", "second-row");
-    secondRow.setAttribute("style", "max-height:500px;");
 
     for (var i = 1; i < 5; i++) {
 
         var secondRowDiv = document.createElement("div");
-        secondRowDiv.setAttribute("style", "position:relative;max-height:100%;display:flex;justify-content:center;");
+        secondRowDiv.setAttribute("style", "position:relative;height:50vh;display:flex;justify-content:center;");
         secondRowDiv.setAttribute("class", "padded one half one-up-ipad");
 
         var secondPic = document.createElement("img");
@@ -101,14 +100,16 @@ form.addEventListener("submit", function (event) {
 })
 
 function updateSave(word) {
-    if (!pastSearch.includes(word)) {
+    if (pastSearch===null){
+        pastSearch=[word];
+    } else if (!pastSearch.includes(word)) {
         pastSearch.push(word);
         while (pastSearch.length>5) {
             pastSearch.shift();
         }
-        printButton();
-        localStorage.setItem("Past Word Searches", JSON.stringify(pastSearch));
     }
+    printButton();
+    localStorage.setItem("Past Word Searches", JSON.stringify(pastSearch));
 }
 
 function init() {
@@ -128,15 +129,17 @@ pastButtonDisplay.addEventListener("click", function(event) {
 
 function printButton() {
     pastButtonDisplay.innerHTML = "";
-    for (var i=0;i<pastSearch.length;i++) {
-        list = document.createElement("li");
-        list.setAttribute("class","half-gapped");
-        button = document.createElement("button");
-        button.textContent = pastSearch[i];
-        button.classList.add("past-search-btn");
-        // button.setAttribute("style","border:2px solid white;border-radius:10px;");
-        list.appendChild(button);
-        pastButtonDisplay.appendChild(list);
+    if (pastSearch!==null){
+        for (var i=0;i<pastSearch.length;i++) {
+            list = document.createElement("li");
+            list.setAttribute("class","half-gapped");
+            button = document.createElement("button");
+            button.textContent = pastSearch[i];
+            button.classList.add("past-search-btn");
+            // button.setAttribute("style","border:2px solid white;border-radius:10px;");
+            list.appendChild(button);
+            pastButtonDisplay.appendChild(list);
+        }
     }
 }
 
