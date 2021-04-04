@@ -121,6 +121,7 @@ pastButtonDisplay.addEventListener("click", function(event) {
     var element=event.target;
     if (element.matches(".past-search-btn")) {
         var word = element.textContent;
+        searchWord.value=word;
         wordFromMerriamCollegiate(word);
         SynAndAntoFromMerriamCollegiate(word);
         imageSearch(word);
@@ -305,9 +306,9 @@ function getAndDisplaySynAndAnt(data, check) {
         noQuotes = document.createElement("p");
         noQuotes.classList.add("padded", "quicksand", "wordDefinitions");
         noQuotes.innerHTML = "No examples found to display.";
+        wordExampleTi.appendChild(noQuotes);
     }
 
-    wordExampleTi.appendChild(noQuotes);
     wordSearchResultsBody.appendChild(wordExampleTi);
 }
 
