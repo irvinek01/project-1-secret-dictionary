@@ -21,7 +21,11 @@ WHEN an image is not possible
 THEN the left part of my view, will fill through the right part completely focusing on the word definitions
 
 ## Usage
- Use the textbox on the top part of the page to search a word then upon submitting, the page will load the results with the emphasis of the word being searched, with the pronunciation beside it (clickable to hear how to pronounce), example sentences, synonyms/antonyms then picture references on the right part.
+Use the textbox on the top part of the page to search a word then upon submitting(HIGHLIGHTED IN YELLOW),  
+Then page will load the results with the emphasis of the word being searched, with the pronunciation beside it(HIGHLIGHTED IN RED), 
+Click to play the pronunciation audio, 
+Example sentences, synonyms/antonyms then picture references on the right part,  
+Past word searches will appear at upper right(HIGHLIGHTED IN GREEN)
 - The overall results page (as of 4/4/2021)
 ![World of Words result page screenshot.](./Assets/screenshots/screenshot2.png)
 
