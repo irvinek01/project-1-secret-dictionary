@@ -22,8 +22,8 @@ THEN the left part of my view, will fill through the right part completely focus
 
 ## Usage
  Use the textbox on the top part of the page to search a word then upon submitting, the page will load the results with the emphasis of the word being searched, with the pronunciation beside it (clickable to hear how to pronounce), example sentences, synonyms/antonyms then picture references on the right part.
-- The overall results page
-![World of Words result page screenshot.](./Assets/screenshots/screenshot1.png)
+- The overall results page (as of 4/4/2021)
+![World of Words result page screenshot.](./Assets/screenshots/screenshot2.png)
 
 ## Credits
 -Oliver Shih (https://github.com/runescape11111)
