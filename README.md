@@ -33,7 +33,6 @@ Past word searches will appear at upper right(HIGHLIGHTED IN GREEN)
 - Oliver Shih (https://github.com/runescape11111)
 - Nick Macaluso (https://github.com/nickmacaluso)
 - Elvis Lee (https://github.com/Elvis2681)
-
 - Merriam-Webster Dictionary https://dictionaryapi.com/
 - https://www.pexels.com/api/
 - https://groundworkcss.github.io/
