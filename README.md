@@ -5,9 +5,10 @@ A web-based word definition searching app, a project decided by the ff: clever p
 - Oliver Shih (https://github.com/runescape11111), 
 - Nick Macaluso (https://github.com/nickmacaluso), 
 - Elvis Lee (https://github.com/Elvis2681), 
-- Arvin John Bautista (https://github.com/irvinek01),  
-of class (UCSD-SD-FSF-FT-03-2021-U-C).   
-It is to enable the user as a beginner english speaker, to learn more of the word that they currently do not have knowledge of, upon the search, they will be presented with the word definitions, pronunciation, example sentences, synonyms/antonyms, and reference pictures as well. Expanding their word vocabulary knowledge in the english language. Web styling by groundworkcss, data source from Merriam-Webster dictionary API and image fetches from Pexels.
+- Arvin John Bautista (https://github.com/irvinek01),
+- of class (UCSD-SD-FSF-FT-03-2021-U-C).   
+It is to enable the user as a beginner english speaker, to learn more of the word that they currently do not have knowledge of, upon the search, they will be presented with the word definitions, pronunciation, example sentences, synonyms/antonyms, and reference pictures as well.  
+Expanding their word vocabulary knowledge in the english language. Web styling by groundworkcss, data source from Merriam-Webster dictionary API and image fetches from Pexels.
 
 ## Acceptance Criteria
 Given a word-search dictionary and an input textbox with a submit button  
